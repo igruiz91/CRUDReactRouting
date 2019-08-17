@@ -1,0 +1,28 @@
+{
+  "restaurant": [
+    {
+      "nombrePlatillo": "Arroz moro",
+      "precioPlatillo": "100",
+      "categoria": "ensalada",
+      "id": 2
+    },
+    {
+      "nombrePlatillo": "bisteca",
+      "precioPlatillo": "500",
+      "categoria": "cortes",
+      "id": 3
+    },
+    {
+      "nombrePlatillo": "coctel de naranja",
+      "precioPlatillo": "100",
+      "categoria": "bebida",
+      "id": 4
+    },
+    {
+      "nombrePlatillo": "pastel de queso",
+      "precioPlatillo": "150",
+      "categoria": "postre",
+      "id": 5
+    }
+  ]
+}

@@ -1,25 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import axios from 'axios';
+import Header from './components/Header';
+import Producto from './components/Producto';
+import Productos from './components/Productos';
+import EditarProductos from './components/EditarProductos';
+import AgregarProductos from './components/AgregarProductos';
 
 function App() {
+
+  const [productos, setProductos] = useState([]);
+  const [recargar, setRecargar] = useState(true);
+
+  useEffect(() => {
+    if (recargar) {
+      consultarApi();
+    }
+    setRecargar(false)
+  }, [recargar]);
+
+  const consultarApi = async () => {
+    const url = `http://localhost:4000/restaurant`;
+
+    const resultado = await axios.get(url);
+    setProductos(resultado.data);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Header />
+      <main className="container mt-5"></main>
+      <Switch>
+        <Route
+          exact path="/productos"
+          render={() => (<Productos productos={productos} setRecargar={setRecargar} />)}
+        />
+        <Route
+          exact path="/producto/nuevo"
+          render={() => (<AgregarProductos setRecargar={setRecargar} />)} />
+
+        <Route exact path="/productos/:id" component={Productos} />
+        <Route
+          exact path="/productos/editar/:id"
+          render={props => {
+            //tomar el id del producto
+            const idProducto = parseInt(props.match.params.id)
+
+            //el producto que se pasa al state
+            const producto = productos.filter(producto => producto.id === idProducto);
+
+            return (
+              <EditarProductos producto={producto[0]} setRecargar={setRecargar} />
+            )
+          }} />
+      </Switch>
+      <p className="mt-4 p2 text-center">Todos los derechos reservados</p>
+    </Router>
   );
 }
 
